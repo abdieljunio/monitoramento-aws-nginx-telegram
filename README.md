@@ -105,15 +105,15 @@ Tela de exemplo:
 
 # 5. Instalar o Nginx.
 - 5.1. Prieiramente digite os comandos `sudo apt update` para checar atualizações e depois `sudo apt upgrade -y` para realizar as atualizações.
-- 5.2. Digite o comando `sudo apt install nginx -y` para instalar o nginx.
-- 5.3. Digite o comando `sudo systemctl start nginx` para iniciar o nginx.
-- 5.4. Digite o comando `sudo systemctl enable nginx` para habilitar o nginx.
-- 5.5. Digite o comando `sudo systemctl status nginx` para checar o status do nginx, que deverá retornar uma mensagem positiva.
+- 5.2. Digite o comando para instalar o nginx: `sudo apt install nginx -y`.
+- 5.3. Digite o comando para iniciar o nginx: `sudo systemctl start nginx`. 
+- 5.4. Digite o comando para habilitar o nginx: `sudo systemctl enable nginx` .
+- 5.5. Digite o comando para checar o status do nginx, que deverá retornar uma mensagem positiva: `sudo systemctl status nginx` .
 
 # 6. Criando uma página HTML.
- - 6.1. Digite o comando `sudo mkdir -p /var/www/meusite.com/html` para criar um diretótio para o site.
- - 6.2. Digite o comando `sudo chown -R $USER:$USER /var/www/meusite.com/html` para definir as permissões.
- - 6.3.  Digite o comando `sudo nano /var/www/meusite.com/html/index.html` para criar o arquivo html
+ - 6.1. Digite o comando para criar um diretótio para o site: `sudo mkdir -p /var/www/meusite.com/html` .
+ - 6.2. Digite o comando para definir as permissões: `sudo chown -R $USER:$USER /var/www/meusite.com/html`.
+ - 6.3.  Digite o comando para criar o arquivo html: `sudo nano /var/www/meusite.com/html/index.html` .
  - 6.4 cole o codigo:
 ```
 <!DOCTYPE html>
@@ -134,7 +134,8 @@ Tela de exemplo:
 pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
 
 # 7. Configurar o Nginx para servir a página.
-- 7.1. Dogote o comando `sudo nano /etc/nginx/sites-available/meusite.com` para criar um arquivo de configuração para o site e adicione oseguinte comteúdo:
+- 7.1. Dogote o comando para criar um arquivo de configuração para o site: `sudo nano /etc/nginx/sites-available/meusite.com`.
+E adicione oseguinte comteúdo:
   ```
   server {
     listen 80;
@@ -150,13 +151,13 @@ pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
 
   ```
   pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
-- 7.2. Digite o comando `sudo ln -s /etc/nginx/sites-available/meusite.com /etc/nginx/sites-enabled/` para criar um link simbólico.
-- 7.3. Digite o comando `sudo rm /etc/nginx/sites-enabled/default` para desabilitar o site padrão.
-- 7.4. Digite o comando `sudo nginx -t` para testar a configuração do Nginx.
+- 7.2. Digite o comando  para criar um link simbólico: `sudo ln -s /etc/nginx/sites-available/meusite.com /etc/nginx/sites-enabled/`.
+- 7.3. Digite o comando para desabilitar o site padrão: `sudo rm /etc/nginx/sites-enabled/default` .
+- 7.4. Digite o comando para testar a configuração do Nginx: `sudo nginx -t` .
  você receberá uma mensagem dizendo "Syntax is ok" e "teste is successful"
-- 7.5 Digite o comando `sudo systemctl reload nginx` para recarregar o nginx.
+- 7.5 Digite o comando para recarregar o nginx:  `sudo systemctl reload nginx` .
 
-  # 8. Acessar a página html.
+# 8. Acessar a página html.
   Volte para a tela do passo 4.3. e copie o ip disponobilizado no tópico 4, e copie na barra de link do seu navegador para exibir a seguinte página:
   ![pt3](https://github.com/user-attachments/assets/424fb8fc-cc73-4b11-9a61-e886b0d45f7c)
 
@@ -181,10 +182,102 @@ WantedBy=multi-user.target
 
 ```
  pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
-- 9.2. Digite o comando `sudo systemctl daemon-reload` para recarregar o systemd.
-- 9.3. Digite o comando `sudo systemctl start nginx` para iniciar o serviço.
-- 9.3. Digite o comando `sudo systemctl enable nginx` para habilitar o serviço.
-- 9.4. Digite o comando `sudo systemctl status nginx` para verificar o status do nginx, se o status estiver "active(running)", faça os seguintes testes:
+- 9.2. Digite o comando para recarregar o systemd: `sudo systemctl daemon-reload` .
+- 9.3. Digite o comando para iniciar o serviço: `sudo systemctl start nginx` .
+- 9.3. Digite o comando para habilitar o serviço: `sudo systemctl enable nginx` .
+- 9.4. Digite o comando para verificar o status do nginx:  `sudo systemctl status nginx`.
+  Se o status estiver "active(running)", faça os seguintes testes:
   Use o comando `sudo pkill -f nginx` para desativar o nginx.
   Use o comado `sudo systemctl status nginx` e você verá que ele foi desativado e reiniciou automaticamente.
-  
+
+# 10. Criar o bot no Telegram.
+  - 10.1. Na barra de pesqiosa do telegram digite: `BotFather`, e selecione o bot com selo verificado e com o nome EXATAMENTE igual ao digitado.
+  - 10.2. No chat do BotFather digite: `/start`, e siga as instruções para criar o bot.
+  - 10.3. Após criar o bot você receberá um token, envie uma mensagem qualquer para o seu bot e depois acesse o seguite link: `https://api.telegram.org/bot<SEU_TOKEN>/getUpdates` (Substitua <SEU_TOKEN> pelo token do seu bot).
+  - Esse link ira abrir um json, procure o campo `id` e salve este número.
+ 
+# 11. Criar um script em Python para monitoramento do site.
+   - 11.1. Digite o comando para instalar o Python3: `sudo apt install python3-pip`
+   - 11.2. Digite o comando para instalar a biblioteca requests: `sudo pip3 install requests`
+   - 11.3. Digite o comando para criar um diretório para o script: `sudo nano /opt/monitoramento/monitoramento.py`
+      coloque o seguinte script e realize as configurações pedidas:
+      ```
+      #!/usr/bin/env python3
+
+      import requests
+      import logging
+      from datetime import datetime
+
+      # Configurações
+      URL = 'http://seusite.com'  # Substitua pelo URL do seu site
+      TELEGRAM_TOKEN = 'SEU_TOKEN_AQUI'  # Substitua pelo token do seu bot
+      TELEGRAM_CHAT_ID = 'SEU_CHAT_ID_AQUI'  # Substitua pelo seu chat_id
+
+      # Configuração de logging
+      logging.basicConfig(filename='/var/log/monitoramento.log',
+                    level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+      def enviar_notificacao(mensagem):
+      """Envia uma mensagem de notificação via Telegram."""
+      url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage'
+      payload = {
+        'chat_id': TELEGRAM_CHAT_ID,
+        'text': mensagem
+      }
+      try:
+        response = requests.post(url, data=payload)
+        response.raise_for_status()
+      except requests.RequestException as e:
+        logging.error(f'Erro ao enviar notificação: {e}')
+
+      def verificar_site():
+      """Verifica a disponibilidade do site."""
+      try:
+        response = requests.get(URL, timeout=10)
+        if response.status_code == 200:
+            logging.info('Site está disponível.')
+        else:
+            mensagem = f'Site retornou status code {response.status_code}.'
+            logging.warning(mensagem)
+            enviar_notificacao(mensagem)
+      except requests.RequestException as e:
+        mensagem = f'Site está indisponível: {e}'
+        logging.error(mensagem)
+        enviar_notificacao(mensagem)
+
+      if __name__ == '__main__':
+      verificar_site()
+
+      ```
+
+      # 12. Configurar a execução automática do script a cada 1 minuto.
+      - 12.1. Digite o comando para criar o arquivo de serviço so systemd: `sudo nano /etc/systemd/system/monitoramento.service`.
+        Adicione o seguinte conteúdo:
+        ```
+        [Unit]
+        Description=Monitoramento da disponibilidade do site
+
+        [Service]
+        ExecStart=/usr/bin/python3 /opt/monitoramento/monitoramento.py
+
+        ```
+        - 12.2. Digite o comando para criar o arquivo de Timer: `sudo nano /etc/systemd/system/monitoramento.timer`.
+          Adicione o seguint conteúdo:
+          ```
+
+          [Unit]
+          Description=Timer para monitoramento do site a cada minuto
+
+          [Timer]
+          OnBootSec=1min
+          OnUnitActiveSec=1min
+
+          [Install]
+          WantedBy=timers.target
+
+          ```
+          - 12.3. Digite os seguintes comados separadamente para ativar e iniciar o timer:
+            `sudo systemctl daemon-reload`
+            `sudo systemctl enable monitoramento.timer`
+            `sudo systemctl start monitoramento.timer`
