@@ -88,4 +88,12 @@ No campo "Network Settings" haverá um botão azul escrito "Edit" clique nele e 
   No campo "Configure storage" eu deixei nas configuração padrão.
   
   ![ec2 - pt5](https://github.com/user-attachments/assets/4e2c69b0-d97e-42aa-abf7-de70c111e199)
-### 3.5. Por último é só clicar no botão cor de laranja no canto inferior direito "Launch instance" (primeira imagem do passo 3.4)
+### 3.5. Por último é só clicar no botão cor de laranja no canto inferior direito "Launch instance" (primeira imagem do passo 3.4) e você será redirecionado para esssa tela:
+
+![ec2 - pt6](https://github.com/user-attachments/assets/1905df3f-832a-4137-8ae1-5000ee3bf1e0)
+
+# 4. Conectar à instancia via SSH.
+### 4.1. Abra o Visual Studio Code (VS Code) e pressione as teclas Ctrl+Shift+' para abrir um novo terminal e siga a imagem para abrir o Git Bash:
+![pt0](https://github.com/user-attachments/assets/b5dd151f-dbb4-4c2e-8ed9-469ae5b6a9d5)
+
+### 4.2
