@@ -96,4 +96,95 @@ No campo "Network Settings" haverá um botão azul escrito "Edit" clique nele e 
 ### 4.1. Abra o Visual Studio Code (VS Code) e pressione as teclas Ctrl+Shift+' para abrir um novo terminal e siga a imagem para abrir o Git Bash:
 ![pt0](https://github.com/user-attachments/assets/b5dd151f-dbb4-4c2e-8ed9-469ae5b6a9d5)
 
-### 4.2
+### 4.2 Volte a AWS vá para ec2 clique em "instances", selecione a instância criada e depois clique no botâo azul "Conect" no canto superior direito.
+Tela de exemplo:
+![pt1](https://github.com/user-attachments/assets/f4cf2371-eab8-4eee-852f-92b91389540b)
+
+### 4.3. Com a seguinte tela aberta, vá ao teminal no VS Code utilize o comando `cd <caminho até a pasta>` para acessar a pasta em que a chave ssh está armazenada, depois copie e cole o codigo do passo 3 da imagem e presssione Enter e em seguida copie e cole o comando de "Exemple" na imagem e pressione Enter depois de alguns segundos digite "yes" para acessar a EC2.
+![pt2](https://github.com/user-attachments/assets/9a2017ac-2566-4af7-ae11-3997863d8bf2)
+
+# 5. Instalar o Nginx.
+- 5.1. Prieiramente digite os comandos `sudo apt update` para checar atualizações e depois `sudo apt upgrade -y` para realizar as atualizações.
+- 5.2. Digite o comando `sudo apt install nginx -y` para instalar o nginx.
+- 5.3. Digite o comando `sudo systemctl start nginx` para iniciar o nginx.
+- 5.4. Digite o comando `sudo systemctl enable nginx` para habilitar o nginx.
+- 5.5. Digite o comando `sudo systemctl status nginx` para checar o status do nginx, que deverá retornar uma mensagem positiva.
+
+# 6. Criando uma página HTML.
+ - 6.1. Digite o comando `sudo mkdir -p /var/www/meusite.com/html` para criar um diretótio para o site.
+ - 6.2. Digite o comando `sudo chown -R $USER:$USER /var/www/meusite.com/html` para definir as permissões.
+ - 6.3.  Digite o comando `sudo nano /var/www/meusite.com/html/index.html` para criar o arquivo html
+ - 6.4 cole o codigo:
+```
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Nginx!</title>
+</head>
+<body>
+        <h1>Bem-vindo!</h1>
+        <p>Olá! Esta é uma página servida pelo Nginx</p>
+
+</body>
+</html>
+
+```
+pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
+
+# 7. Configurar o Nginx para servir a página.
+- 7.1. Dogote o comando `sudo nano /etc/nginx/sites-available/meusite.com` para criar um arquivo de configuração para o site e adicione oseguinte comteúdo:
+  ```
+  server {
+    listen 80;
+    server_name meusite.com;
+
+    root /var/www/meusite.com/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+   }
+
+  ```
+  pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
+- 7.2. Digite o comando `sudo ln -s /etc/nginx/sites-available/meusite.com /etc/nginx/sites-enabled/` para criar um link simbólico.
+- 7.3. Digite o comando `sudo rm /etc/nginx/sites-enabled/default` para desabilitar o site padrão.
+- 7.4. Digite o comando `sudo nginx -t` para testar a configuração do Nginx.
+ você receberá uma mensagem dizendo "Syntax is ok" e "teste is successful"
+- 7.5 Digite o comando `sudo systemctl reload nginx` para recarregar o nginx.
+
+  # 8. Acessar a página html.
+  Volte para a tela do passo 4.3. e copie o ip disponobilizado no tópico 4, e copie na barra de link do seu navegador para exibir a seguinte página:
+  ![pt3](https://github.com/user-attachments/assets/424fb8fc-cc73-4b11-9a61-e886b0d45f7c)
+
+# 9. Criar um serviço systemd para reiniciar o Nginx automaticamente.
+- 9.1. Digite o comanddo `sudo nano /etc/systemd/system/nginx.service` para criar o arquivo de unidade do systemd e adicione o seguinte conteúdo:
+```
+[Unit]
+Description=The NGINX HTTP and reverse proxy server
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/nginx
+ExecReload=/usr/sbin/nginx -s reload
+ExecStop=/usr/sbin/nginx -s quit
+Restart=always
+RestartSec=5s
+Type=forking
+PIDFile=/run/nginx.pid
+
+[Install]
+WantedBy=multi-user.target
+
+```
+ pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
+- 9.2. Digite o comando `sudo systemctl daemon-reload` para recarregar o systemd.
+- 9.3. Digite o comando `sudo systemctl start nginx` para iniciar o serviço.
+- 9.3. Digite o comando `sudo systemctl enable nginx` para habilitar o serviço.
+- 9.4. Digite o comando `sudo systemctl status nginx` para verificar o status do nginx, se o status estiver "active(running)", faça os seguintes testes:
+  Use o comando `sudo pkill -f nginx` para desativar o nginx.
+  Use o comado `sudo systemctl status nginx` e você verá que ele foi desativado e ativado novamente.
+  
