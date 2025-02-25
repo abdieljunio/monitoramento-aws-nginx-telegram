@@ -186,5 +186,5 @@ WantedBy=multi-user.target
 - 9.3. Digite o comando `sudo systemctl enable nginx` para habilitar o serviço.
 - 9.4. Digite o comando `sudo systemctl status nginx` para verificar o status do nginx, se o status estiver "active(running)", faça os seguintes testes:
   Use o comando `sudo pkill -f nginx` para desativar o nginx.
-  Use o comado `sudo systemctl status nginx` e você verá que ele foi desativado e ativado novamente.
+  Use o comado `sudo systemctl status nginx` e você verá que ele foi desativado e reiniciou automaticamente.
   
