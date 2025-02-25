@@ -112,7 +112,7 @@ Tela de exemplo:
 
 # 6. Criando uma página HTML.
  - 6.1. Digite o comando para criar um diretótio para o site: `sudo mkdir -p /var/www/meusite.com/html` .
- - 6.2. Digite o comando para definir as permissões: `sudo chown -R $USER:$USER /var/www/meusite.com/html`.
+ - 6.2. Digite os comandos para definir as permissões: `sudo chown -R $USER:$USER /var/www/meusite.com/html` `sudo chown -R www-data:www-data /var/www/meusite.com/html` `sudo chmod -R 755 /var/www/meusite.com/html`.
  - 6.3.  Digite o comando para criar o arquivo html: `sudo nano /var/www/meusite.com/html/index.html` .
  - 6.4 cole o codigo:
 ```
@@ -198,8 +198,8 @@ WantedBy=multi-user.target
  
 # 11. Criar um script em Python para monitoramento do site.
    - 11.1. Digite o comando para instalar o Python3: `sudo apt install python3-pip`
-   - 11.2. Digite o comando para instalar a biblioteca requests: `sudo pip3 install requests`
-   - 11.3. Digite o comando para criar um diretório para o script: `sudo nano /opt/monitoramento/monitoramento.py`
+   - 11.2. Digite o comando para criar um diretótio para o script: `sudo mkdir /opt/monitoramento`
+   - 11.3. Digite o comando para criar o script: `sudo nano /opt/monitoramento/monitoramento.py`
       coloque o seguinte script e realize as configurações pedidas:
       ```
       #!/usr/bin/env python3
@@ -281,3 +281,8 @@ WantedBy=multi-user.target
             `sudo systemctl daemon-reload`
             `sudo systemctl enable monitoramento.timer`
             `sudo systemctl start monitoramento.timer`
+           - 12.4. Para testar as notificações você pode testar os seguintes comandos:
+               - Renomear o script que monitora a página html: `sudo mv /var/www/meusite.com/html /var/www/meusite.com/html_bkp` , isso fará você ser notificado do erro 404. Para restaurar `sudo mv /var/www/meusite.com/html_bkp /var/www/meusite.com/html`
+               - Parar o nginx desativando o reinício automático: `sudo systemctl disable --now nginx`
+               - Comando para testar (parar o nginx por 2 min): `sleep 120 && sudo systemctl start nginx`
+               - Para reabilitar o reinício automático : `sudo systemctl enable nginx`
