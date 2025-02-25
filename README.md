@@ -121,14 +121,125 @@ Tela de exemplo:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo ao Nginx!</title>
+    <title>Carrossel de Informações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .carousel {
+            position: relative;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+        .slide h2 {
+            color: #333;
+        }
+        .slide p {
+            color: #666;
+            font-size: 18px;
+        }
+        .navigation {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .navigation button {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            pointer-events: all;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .navigation button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .navigation button svg {
+            width: 20px;
+            height: 20px;
+        }
+        .navigation button.prev {
+            margin-left: 10px;
+        }
+        .navigation button.next {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-        <h1>Bem-vindo!</h1>
-        <p>Olá! Esta é uma página servida pelo Nginx</p>
+    <div class="carousel">
+        <div class="slides">
+            <div class="slide">
+                <h2 style="color: #003366;">O que é Nginx?</h2>
+                <p>O Nginx é um servidor web de código aberto conhecido por sua alta performance e estabilidade. Ele também pode ser usado como proxy reverso, balanceador de carga e cache HTTP.</p>
+            </div>
+            <div class="slide">
+                <h2 style="color: #FF6600;">Amazon EC2</h2>
+                <p>O Amazon Elastic Compute Cloud (EC2) é um serviço da AWS que fornece capacidade de computação escalável na nuvem, permitindo que os usuários executem aplicações em um ambiente virtual.</p>
+            </div>
+            <div class="slide">
+                <h2 style="color: #003366;">Scripts de Monitoramento em Python</h2>
+                <p>Scripts de monitoramento em Python são utilizados para verificar a disponibilidade e performance de páginas web, enviando alertas em caso de falhas ou degradação do serviço.</p>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="prev" id="prev" aria-label="Slide anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button class="next" id="next" aria-label="Próximo slide">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+            </button>
+        </div>
+    </div>
 
+    <script>
+        const slides = document.querySelector('.slides');
+        const slide = document.querySelectorAll('.slide');
+        let currentIndex = 0;
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slide.length;
+            updateCarousel();
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slide.length) % slide.length;
+            updateCarousel();
+        });
+
+        function updateCarousel() {
+            slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+    </script>
 </body>
 </html>
+
 
 ```
 pressione Ctrl+X  depis Y depos Enter para salvar e fechar o arquivo.
@@ -159,7 +270,8 @@ E adicione oseguinte comteúdo:
 
 # 8. Acessar a página html.
   Volte para a tela do passo 4.3. e copie o ip disponobilizado no tópico 4, e copie na barra de link do seu navegador para exibir a seguinte página:
-  ![pt3](https://github.com/user-attachments/assets/424fb8fc-cc73-4b11-9a61-e886b0d45f7c)
+![Captura de tela 2025-02-25 173728](https://github.com/user-attachments/assets/a59fd721-4b5a-468e-80c0-1a7b1578fc59)
+
 
 # 9. Criar um serviço systemd para reiniciar o Nginx automaticamente.
 - 9.1. Digite o comanddo `sudo nano /etc/systemd/system/nginx.service` para criar o arquivo de unidade do systemd e adicione o seguinte conteúdo:
