@@ -286,3 +286,5 @@ WantedBy=multi-user.target
                - Parar o nginx desativando o reinício automático: `sudo systemctl disable --now nginx`
                - Comando para testar (parar o nginx por 2 min): `sleep 120 && sudo systemctl start nginx`
                - Para reabilitar o reinício automático : `sudo systemctl enable nginx`
+# Conclusão
+Com estas etapas, você terá configurado uma instância EC2 na AWS, instalado o Nginx, configurado uma página HTML simples e implementado um sistema de monitoramento para garantir que o seu site esteja sempre disponível, com notificações via Telegram em caso de falha.
